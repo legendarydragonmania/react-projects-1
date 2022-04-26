@@ -3,7 +3,7 @@ import Cocktail from './Cocktail'
 import Loading from './Loading'
 import { useGlobalContext } from '../context'
 
-const CocktailList = () => {
+export default function CocktailList() {
   const { cocktails, loading } = useGlobalContext()
   if (loading) {
     return <Loading />
@@ -16,7 +16,7 @@ const CocktailList = () => {
     )
   }
   return (
-    <section>
+    <section className='section'>
       <h2 className='section-title'>cocktails</h2>
       <div className='cocktails-center'>
         {cocktails.map((item) => {
@@ -26,5 +26,3 @@ const CocktailList = () => {
     </section>
   )
 }
-
-export default CocktailList
