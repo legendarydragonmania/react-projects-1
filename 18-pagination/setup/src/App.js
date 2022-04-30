@@ -15,10 +15,30 @@ function App() {
     setPage(index)
   }
 
+  const prevPage = () => {
+    setPage((oldPage) => {
+      let prevPage = oldPage - 1
+      if (prevPage < 0) {
+        prevPage = data.length - 1
+      }
+      return prevPage
+    })
+  }
+
+  const nextPage = () => {
+    setPage((oldPage) => {
+      let nextPage = oldPage + 1
+      if (nextPage > data.length - 1) {
+        nextPage = 0
+      }
+      return nextPage
+    })
+  }
+
   return (
     <main>
       <div className='section-title'>
-        <h1>{loading ? 'Loading...' : 'Pagination'}</h1>
+        <h1>{loading ? 'loading...' : 'pagination'}</h1>
         <div className='underline'></div>
       </div>
       <section className='followers'>
@@ -29,17 +49,23 @@ function App() {
         </div>
         {!loading && (
           <div className='btn-container'>
+            <button className='prev-btn' onClick={prevPage}>
+              prev
+            </button>
             {data.map((item, index) => {
               return (
                 <button
-                  className='page-btn'
                   key={index}
-                  onClick={handlePage(index)}
+                  className={`page-btn ${index === page ? 'active-btn' : null}`}
+                  onClick={() => handlePage(index)}
                 >
                   {index + 1}
                 </button>
               )
             })}
+            <button className='next-btn' onClick={nextPage}>
+              next
+            </button>
           </div>
         )}
       </section>

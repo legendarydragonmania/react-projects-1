@@ -3,9 +3,18 @@ import { Switch, Route } from 'react-router-dom'
 
 import Home from './Home'
 import Movie from './SingleMovie'
+import Error from './Error'
 
 function App() {
-  return <h2>movie DB starter</h2>
+  return (
+    <Switch>
+      <Route exact path='/'>
+        <Home />
+      </Route>
+      <Route path='/movies/:id' children={<Movie />} />
+      <Route path='*' children={<Error />} />
+    </Switch>
+  )
 }
 
 export default App
