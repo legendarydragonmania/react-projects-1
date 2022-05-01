@@ -24,6 +24,11 @@ const AppProvider = ({ children }) => {
   const [correct, setCorrect] = useState(0)
   const [error, setError] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [quiz, setQuiz] = useState({
+    amount: 10,
+    category: 'sports',
+    difficulty: 'easy',
+  })
 
   const fetchQuestions = async (url) => {
     setLoading(true)
@@ -49,7 +54,7 @@ const AppProvider = ({ children }) => {
     setIndex((prevIndex) => {
       const index = prevIndex + 1
       if (index > questions.length - 1) {
-        // openModal()
+        openModal()
         return 0
       } else {
         return index
@@ -64,9 +69,31 @@ const AppProvider = ({ children }) => {
     nextQuestion()
   }
 
-  useEffect(() => {
-    fetchQuestions(tempUrl)
-  }, [])
+  const openModal = () => {
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setCorrect(0)
+    setWaiting(true)
+  }
+
+  const handleChange = (e) => {
+    const name = e.target.name
+    const value = e.target.value
+    setQuiz({
+      ...quiz,
+      [name]: value,
+    })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const { amount, category, difficulty } = quiz
+    const url = `${API_ENDPOINT}amount=${amount}&category=${table[category]}&difficulty=${difficulty}&type=multiple`
+    fetchQuestions(url)
+  }
 
   return (
     <AppContext.Provider
@@ -80,6 +107,10 @@ const AppProvider = ({ children }) => {
         isModalOpen,
         checkAnswer,
         nextQuestion,
+        closeModal,
+        quiz,
+        handleChange,
+        handleSubmit,
       }}
     >
       {children}
